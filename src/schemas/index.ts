@@ -1,7 +1,7 @@
 import {
   movieSchema,
   returnMovieSchema,
-  returnAllMovies,
+  returnAllMoviesSchema,
 } from "./movieSchemas";
 
-export { movieSchema, returnMovieSchema, returnAllMovies };
+export { movieSchema, returnMovieSchema, returnAllMoviesSchema };

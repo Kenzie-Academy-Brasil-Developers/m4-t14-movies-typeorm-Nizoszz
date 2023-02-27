@@ -1,6 +1,6 @@
+import "express-async-errors";
 import express, { Application } from "express";
 import { handleErrors } from "./errors";
-import "express-async-errors";
 import movieRoutes from "./routers/movie.routes";
 
 const app: Application = express();

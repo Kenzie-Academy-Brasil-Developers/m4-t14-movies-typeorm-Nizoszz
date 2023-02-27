@@ -15,17 +15,14 @@ movieRoutes.post(
   ensureNameMovieExistMiddleware.verify,
   movieControllers.create
 );
-
 movieRoutes.get("", movieControllers.read);
-
 movieRoutes.patch(
   "/:id",
-  validatedData.verify(movieUpdateSchema),
   ensureMovieExist.verify,
+  validatedData.verify(movieUpdateSchema),
   ensureNameMovieExistMiddleware.verify,
   movieControllers.update
 );
-
 movieRoutes.delete("/:id", ensureMovieExist.verify, movieControllers.del);
 
 export default movieRoutes;

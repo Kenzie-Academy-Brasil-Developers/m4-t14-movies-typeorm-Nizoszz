@@ -1,5 +1,4 @@
 import {
-  iAllMoviesReturn,
   iMovie,
   iMovieReturn,
   iMovieUpdate,
@@ -10,7 +9,7 @@ import { Movie } from "../entities";
 import { Repository } from "typeorm";
 import {
   movieSchema,
-  returnAllMovies,
+  returnAllMoviesSchema,
   returnMovieSchema,
 } from "../schemas/movieSchemas";
 
@@ -26,16 +25,21 @@ const create = async (data: iMovie): Promise<iMovieReturn> => {
   return newMovie;
 };
 
-const read = async (query: any): Promise<iPagination> => {
+const read = async (payload: any): Promise<iPagination> => {
   const movieRepo: Repository<Movie> = AppDataSource.getRepository(Movie);
+  const count: number = await movieRepo.count();
 
-  const page: number = Number(query.page) || 1;
-  const perPage: number = Number(query.perPage) || 5;
+  const page: number = Number(payload.page) || 1;
+  const perPage: number = Number(payload.perPage) || 5;
   const sort: string =
-    query.sort !== "price" && query.sort !== "duration" ? "id" : query.sort;
+    payload.sort !== "price" && payload.sort !== "duration"
+      ? "id"
+      : payload.sort;
 
   const order =
-    query.order !== "desc" && query.order === undefined ? "asc" : query.order;
+    payload.order !== "desc" && payload.order === undefined
+      ? "asc"
+      : payload.order;
 
   const findMovies: Movie[] = await movieRepo.find({
     take: perPage,
@@ -58,7 +62,7 @@ const read = async (query: any): Promise<iPagination> => {
   const pagination: iPagination = {
     previousPage: previousPage,
     nextPage: nextPage,
-    count: findMovies.length,
+    count: count,
     data: findMovies,
   };
 

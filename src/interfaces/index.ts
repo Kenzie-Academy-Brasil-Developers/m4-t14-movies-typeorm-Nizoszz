@@ -4,7 +4,14 @@ import {
   iMovieRepo,
   iAllMoviesReturn,
   iMovieUpdate,
-  iPagination
+  iPagination,
 } from "./movie.interfaces";
 
-export { iMovie, iMovieReturn, iMovieRepo, iAllMoviesReturn, iMovieUpdate, iPagination };
+export {
+  iMovie,
+  iMovieReturn,
+  iMovieRepo,
+  iAllMoviesReturn,
+  iMovieUpdate,
+  iPagination,
+};
