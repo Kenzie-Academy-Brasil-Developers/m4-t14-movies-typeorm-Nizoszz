@@ -7,11 +7,7 @@ import {
 import { AppDataSource } from "../data-source";
 import { Movie } from "../entities";
 import { Repository } from "typeorm";
-import {
-  movieSchema,
-  returnAllMoviesSchema,
-  returnMovieSchema,
-} from "../schemas/movieSchemas";
+import { movieSchema, returnMovieSchema } from "../schemas/movieSchemas";
 
 const create = async (data: iMovie): Promise<iMovieReturn> => {
   const movieRepo: Repository<Movie> = AppDataSource.getRepository(Movie);
@@ -29,17 +25,16 @@ const read = async (payload: any): Promise<iPagination> => {
   const movieRepo: Repository<Movie> = AppDataSource.getRepository(Movie);
   const count: number = await movieRepo.count();
 
-  const page: number = Number(payload.page) || 1;
-  const perPage: number = Number(payload.perPage) || 5;
-  const sort: string =
-    payload.sort !== "price" && payload.sort !== "duration"
-      ? "id"
-      : payload.sort;
+  let page: number = Number(payload.page) || 1;
+  page = payload.page <= 0 ? 1 : page;
 
-  const order =
-    payload.order !== "desc" && payload.order === undefined
-      ? "asc"
-      : payload.order;
+  let perPage: number = Number(payload.perPage) || 5;
+  perPage = payload.perPage <= 0 ? 1 : perPage;
+  let sort: string = "price" || "duration";
+  sort = payload.sort === sort ? sort : "id";
+
+  let order: string = "asc" || "desc";
+  order = payload.order === order ? order : "asc";
 
   const findMovies: Movie[] = await movieRepo.find({
     take: perPage,
