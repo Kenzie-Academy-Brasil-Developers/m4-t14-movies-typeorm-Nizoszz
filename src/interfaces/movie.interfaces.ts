@@ -15,7 +15,7 @@ type iMovieUpdate = DeepPartial<Movie>;
 type iMovieRepo = Repository<Movie>;
 
 interface iPagination {
-  previousPage: string | null;
+  prevPage: string | null;
   nextPage: string | null;
   count: number;
   data: Movie[];

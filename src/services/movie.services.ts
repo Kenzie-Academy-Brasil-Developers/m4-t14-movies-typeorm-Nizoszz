@@ -7,7 +7,7 @@ import {
 import { AppDataSource } from "../data-source";
 import { Movie } from "../entities";
 import { Repository } from "typeorm";
-import { movieSchema, returnMovieSchema } from "../schemas/movieSchemas";
+import { returnMovieSchema } from "../schemas/movieSchemas";
 
 const create = async (data: iMovie): Promise<iMovieReturn> => {
   const movieRepo: Repository<Movie> = AppDataSource.getRepository(Movie);
@@ -44,7 +44,7 @@ const read = async (payload: any): Promise<iPagination> => {
     },
   });
 
-  const previousPage: string | null =
+  const prevPage: string | null =
     page > 1
       ? `http://localhost:3000/movies?page=${page - 1}&perPage=${perPage}`
       : null;
@@ -55,7 +55,7 @@ const read = async (payload: any): Promise<iPagination> => {
       : null;
 
   const pagination: iPagination = {
-    previousPage: previousPage,
+    prevPage: prevPage,
     nextPage: nextPage,
     count: count,
     data: findMovies,
@@ -78,7 +78,7 @@ const update = async (data: iMovieUpdate, id: number): Promise<iMovie> => {
 
   await movieRepo.save(movie);
 
-  const update = movieSchema.parse(movie);
+  const update = returnMovieSchema.parse(movie);
 
   return update;
 };
