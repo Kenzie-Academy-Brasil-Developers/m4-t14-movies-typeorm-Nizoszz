@@ -16,7 +16,7 @@ const verify = async (
     },
   });
   if (!findMovie) {
-    throw new AppError("Movie not found!", 404);
+    throw new AppError("Movie not found", 404);
   }
 
   return next();
