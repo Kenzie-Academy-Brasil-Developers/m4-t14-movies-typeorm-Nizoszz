@@ -29,12 +29,22 @@ const read = async (payload: any): Promise<iPagination> => {
   page = payload.page <= 0 ? 1 : page;
 
   let perPage: number = Number(payload.perPage) || 5;
-  perPage = payload.perPage <= 0 ? 1 : perPage;
-  let sort: string = "price" || "duration";
-  sort = payload.sort === sort ? sort : "id";
+  perPage = payload.perPage < 1 || payload.perPage > 5 ? 5 : perPage;
 
-  let order: string = "asc" || "desc";
-  order = payload.order === order ? order : "asc";
+  let sort: string =
+    payload.sort === "price" || payload.sort === "duration"
+      ? payload.sort
+      : "id";
+
+  let order: string =
+    payload.order === "asc" || payload.order === "desc" ? payload.order : "asc";
+
+  if (payload.sort === undefined) {
+    order =
+      payload.order !== "asc" || payload.order !== "desc"
+        ? "asc"
+        : payload.order;
+  }
 
   const findMovies: Movie[] = await movieRepo.find({
     take: perPage,
@@ -44,15 +54,42 @@ const read = async (payload: any): Promise<iPagination> => {
     },
   });
 
-  const prevPage: string | null =
+  let prevPage: string | null = "";
+  let nextPage: string | null = "";
+
+  prevPage =
     page > 1
       ? `http://localhost:3000/movies?page=${page - 1}&perPage=${perPage}`
       : null;
 
-  const nextPage: string | null =
-    page < 5
+  nextPage =
+    page < 4
       ? `http://localhost:3000/movies?page=${page + 1}&perPage=${perPage}`
       : null;
+
+  if (payload.perPage === undefined) {
+    prevPage =
+      page > 1
+        ? `http://localhost:3000/movies?page=${page - 1}&perPage=${perPage}`
+        : null;
+
+    nextPage =
+      page < 3
+        ? `http://localhost:3000/movies?page=${page + 1}&perPage=${perPage}`
+        : null;
+  }
+
+  if (payload.perPage && payload.page) {
+    prevPage =
+      page > 1
+        ? `http://localhost:3000/movies?page=${page - 1}&perPage=${perPage}`
+        : null;
+
+    nextPage =
+      page < 4
+        ? `http://localhost:3000/movies?page=${page + 1}&perPage=${perPage}`
+        : null;
+  }
 
   const pagination: iPagination = {
     prevPage: prevPage,
