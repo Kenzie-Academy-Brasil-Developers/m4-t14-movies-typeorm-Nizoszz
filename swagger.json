@@ -1,0 +1,166 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Movies",
+    "description": "Documentation from movies api",
+    "version": "1.0.0"
+  },
+  "basePath": "/",
+  "paths": {
+    "/movies": {
+      "post": {
+        "summary": "Cadastro de filmes",
+        "description": "Essa rota é responsável por registrar um novo filme",
+        "tags": ["Movies"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Movie"
+              },
+              "examples": {
+                "movie": {
+                  "value": {
+                    "name": "Ghost Rider Spirit of Vengeance",
+                    "description": "Depois de um período recluso na Europa, Johnny Blaze embarca em uma nova missão para se livrar da maldição de ser um motoqueiro fantasma. Desta vez, ele precisa impedir que o próprio demônio encarnado sequestre um garoto de dez anos que pode ser a única esperança da humanidade contra as trevas.",
+                    "duration": 96,
+                    "price": 21
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Movie"
+                }
+              }
+            }
+          },
+
+          "409": {
+            "description": "Movie already exists."
+          }
+        }
+      },
+      "get": {
+        "summary": "Listagem de filmes",
+        "description": "Essa rota é responsável por listar todos os filmes registrado no sistema",
+        "tags": ["Movies"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Movie"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/movies/{id}": {
+      "delete": {
+        "summary": "Deletar o filme",
+        "description": "Essa rota é responsável por deletar o filme baseado no seu id",
+        "tags": ["Movies"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "number",
+            "description": "ID do filme registrado no banco de dados",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No response body"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Atualizar os dados do filme",
+        "description": "Essa rota é responsável por atualizar os dados do filme baseado no seu id",
+        "tags": ["Movies"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "number",
+            "description": "ID do filme registrado no banco de dados",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Movie"
+              },
+              "examples": {
+                "movie": {
+                  "value": {
+                    "name": "Ghost Rider Spirit of Vengeance",
+                    "description": "Depois de um período recluso na Europa, Johnny Blaze embarca em uma nova missão para se livrar da maldição de ser um motoqueiro fantasma. Desta vez, ele precisa impedir que o próprio demônio encarnado sequestre um garoto de dez anos que pode ser a única esperança da humanidade contra as trevas.",
+                    "duration": 96,
+                    "price": 21
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Movie"
+                }
+              }
+            }
+          },
+
+          "409": {
+            "description": "Movie already exists."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Movie": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "number"
+          },
+          "price": {
+            "type": "number"
+          },
+          "id": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+}
